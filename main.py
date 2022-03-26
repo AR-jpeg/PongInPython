@@ -65,6 +65,20 @@ def draw_window(left: Paddle, right: Paddle, ball: Ball, scores: Sequence[int]):
         (WIDTH - current_score_text_for_right.get_width(), 20),
     )
 
+    # Draw a button to go back to the home screen
+    back_to_home_screen_text = CREATE_NEW_GAME_FONT.render(
+        "Back to Home Screen", True, WHITE
+    )
+    back_to_home_screen_button = Button(
+        WIDTH - back_to_home_screen_text.get_width() - 20,
+        HEIGHT - back_to_home_screen_text.get_height() - 20,
+        home_screen,
+        [],
+        back_to_home_screen_text,
+    )
+    back_to_home_screen_button.draw(WIN)
+    back_to_home_screen_button.clicked(pygame.mouse.get_pos())
+
     pygame.display.update()
 
 
@@ -103,6 +117,7 @@ def home_screen():
             if event.type == pygame.QUIT:
                 run = False
 
+        WIN.fill(BLACK)
         WIN.blit(PONG_LOGO_IMAGE, (WIDTH // 2 - PONG_LOGO_IMAGE.get_width() // 2, 0))
 
         start_game_with_computer_text = CREATE_NEW_GAME_FONT.render(
@@ -176,5 +191,8 @@ def main(play_with_computer: bool = True):
 
 
 if __name__ == "__main__":
-    home_screen()
-    main()
+    try:
+        home_screen()
+    except pygame.error:
+        print("Quitting the game")
+        pygame.quit()
